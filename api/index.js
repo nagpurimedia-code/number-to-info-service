@@ -32,7 +32,7 @@ export default async function handler(req, res) {
     const fetch = (await import('node-fetch')).default;
     
     const response = await fetch(
-      `https://numapis.beastaccuserrr.workers.dev/?apikey=PAPAKIAPI&number=${number}`,
+      `https://number-to-api-team-only.vercel.app/api/index.js?api_key=team6months&number=${number}`,
       {
         headers: {
           'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36'
