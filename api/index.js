@@ -12,7 +12,7 @@ export default async function handler(req, res) {
   const { api_key, number } = req.query;
   
   // Validate API key
-  if (api_key !== 'leekdata') {
+  if (api_key !== 'database') {
     return res.status(401).json({
       status: 'error',
       message: 'Invalid API key'
