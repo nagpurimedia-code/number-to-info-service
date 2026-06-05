@@ -1,68 +1,36 @@
+from flask import Flask, request, jsonify
 import requests
-import json
+from flask_cors import CORS
 
-def handler(request = None):
-    # Vercel ka format
-    if request and 'query' in request:
-        query = request.get('query', {})
-        api_key = query.get('api_key', '')
-        number = query.get('number', '')
-    else:
-        # Local testing ke liye
-        from urllib.parse import parse_qs
-        import os
-        query_string = os.environ.get('QUERY_STRING', '')
-        params = parse_qs(query_string)
-        api_key = params.get('api_key', [''])[0]
-        number = params.get('number', [''])[0]
+app = Flask(__name__)
+CORS(app)
+
+@app.route('/api/index.py', methods=['GET'])
+def handle():
+    api_key = request.args.get('api_key')
+    number = request.args.get('number')
     
-    # Validate API key
-    if api_key != 'datalookup':
-        return {
-            'statusCode': 401,
-            'headers': {'Content-Type': 'application/json'},
-            'body': json.dumps({'status': 'error', 'message': 'Invalid API key'})
-        }
+    if api_key != 'leekdata':
+        return jsonify({'status': 'error', 'message': 'Invalid API key'}), 401
     
-    # Validate number
     if not number or len(number) != 10 or not number.isdigit():
-        return {
-            'statusCode': 400,
-            'headers': {'Content-Type': 'application/json'},
-            'body': json.dumps({'status': 'error', 'message': '10-digit number required'})
-        }
+        return jsonify({'status': 'error', 'message': '10-digit number required'}), 400
     
     try:
-        # Fetch real data
-        response = requests.get(
+        resp = requests.get(
             'https://number-to-api-team-only.vercel.app/api/index.js',
             params={'api_key': 'team6months', 'number': number},
-            timeout=10,
-            headers={
-                'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36'
-            }
+            timeout=10
         )
+        data = resp.json()
         
-        data = response.json()
-        
-        # Clean response - remove unwanted fields
-        if 'timestamp' in data:
-            del data['timestamp']
-        if 'count' in data:
-            del data['count']
-        
-        # Change developer name
+        # Clean
+        data.pop('timestamp', None)
+        data.pop('count', None)
         data['developer'] = 'RedRose Member'
         
-        return {
-            'statusCode': 200,
-            'headers': {'Content-Type': 'application/json'},
-            'body': json.dumps(data)
-        }
-        
+        return jsonify(data), 200
     except Exception as e:
-        return {
-            'statusCode': 500,
-            'headers': {'Content-Type': 'application/json'},
-            'body': json.dumps({'status': 'error', 'message': str(e)})
-        }
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+app = app  # Vercel ke liye
