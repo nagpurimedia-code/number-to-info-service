@@ -17,7 +17,7 @@ def handler(request = None):
         number = params.get('number', [''])[0]
     
     # Validate API key
-    if api_key != 'leekdata':
+    if api_key != 'datalookup':
         return {
             'statusCode': 401,
             'headers': {'Content-Type': 'application/json'},
