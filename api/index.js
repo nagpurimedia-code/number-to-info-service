@@ -48,6 +48,7 @@ export default async function handler(req, res) {
     delete data.server_timestamp;
     delete data.endpoint;
     delete data.cached;
+    delete data.credit;
     
     // Change developer name
     data.developer = 'ColdenMack';
