@@ -52,7 +52,7 @@ export default async function handler(req, res) {
     delete data.type;
     
     // Change developer name
-    data.developer = 'ColdenMack';
+    data.developer = 'Colden Mack';
     
     // Return success response
     return res.status(200).json(data);
