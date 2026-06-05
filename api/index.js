@@ -49,7 +49,7 @@ export default async function handler(req, res) {
     delete data.endpoint;
     
     // Change developer name
-    data.developer = 'RedRose Member';
+    data.developer = 'ColdenMack';
     
     // Return success response
     return res.status(200).json(data);
