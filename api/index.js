@@ -51,6 +51,8 @@ export default async function handler(req, res) {
     delete data.credit;
     delete data.type;
     delete data.success;
+    delete data.proxyUsed;
+    delete data.attempt;
     
     // Change developer name
     data.developer = 'Colden Mack';
